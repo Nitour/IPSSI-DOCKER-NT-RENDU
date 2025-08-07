@@ -1,0 +1,14 @@
+apiVersion: 1
+
+providers:
+  - name: 'PostgreSQL Dashboards'
+    folder: 'PostgreSQL'
+    type: file
+    options:
+      path: /etc/grafana/provisioning/dashboards
+      updateIntervalSeconds: 30
+  - name: 'Flask API Dashboard'
+    folder: 'Flask'
+    type: file
+    options:
+      path: /etc/grafana/provisioning/dashboards

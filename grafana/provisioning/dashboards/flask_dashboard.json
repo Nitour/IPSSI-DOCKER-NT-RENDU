@@ -1,0 +1,45 @@
+{
+  "uid": "flask-api-dashboard",
+  "title": "Flask API - Monitoring",
+  "schemaVersion": 25,
+  "version": 1,
+  "refresh": "5s",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Nombre de requêtes HTTP",
+      "id": 1,
+      "targets": [
+        {
+          "expr": "sum(rate(flask_http_request_total[1m]))",
+          "legendFormat": "Total Req/s",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "graph",
+      "title": "Temps de réponse moyen (s)",
+      "id": 2,
+      "targets": [
+        {
+          "expr": "rate(flask_http_request_duration_seconds_sum[1m]) / rate(flask_http_request_duration_seconds_count[1m])",
+          "legendFormat": "Duration",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Répartition des statuts HTTP",
+      "id": 3,
+      "targets": [
+        {
+          "expr": "sum by(status) (rate(flask_http_request_total[1m]))",
+          "legendFormat": "{{status}}",
+          "refId": "A"
+        }
+      ]
+    }
+  ]
+}
