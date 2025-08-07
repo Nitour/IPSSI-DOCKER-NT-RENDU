@@ -103,3 +103,10 @@ todo-docker-infra/
 | Structure de projet modulaire            | ✔️     | Arborescence propre et extensible               |
 | Documentation incluse                    | ✔️     | README explicite et structuré                   |
 ```
+
+## Résumé du projet
+
+Ce projet met en place une infrastructure conteneurisée pour une application de gestion de tâches, structurée autour de plusieurs services interdépendants. De mon point de vue j'ai eu beaucoup de mal a le faire et j'ai été confontré a de nombreux problèmes. Je tiens a préciser que j'ai jamais touché a docker auapravant, j'ai tenté de m'aider du moins que possible de l'IA puisqu'elle me fait perdre beaucoup de temps (bien plus que si je travail seul). 
+Certaines templates (grafana par exemple) et ce Readme est lui généré a l'aide de l'IA.
+J'ai rencontré des problèmes par exemple : 
+1. tout fonctionne correctement j'arrive a communiquer avec mes API, et d'un coup (sans faire un down et un up) les api deviennent indisponibles. Et parfois le projet les API ne fonctionnaient plus j'ai passé donc beaucoup de temps a débugger cel . 
