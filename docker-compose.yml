@@ -1,10 +1,10 @@
 services:
 
-  app:
-    build: ./app
+  app:  # Application Flask (API)
+    build: ./app # Construction à partir du Dockerfile dans ./app
     ports:
-      - "5000:5000"
-    environment:
+      #- "5000:5000" # Port mappé pour accès direct (peut être retiré si accès uniquement via Traefik)
+    environment: # Variables d'environnement pour config DB
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -25,17 +25,17 @@ services:
       - "traefik.http.services.todo.loadbalancer.server.port=5000"
 
     networks:
-      - backend
-      - traefik
+      - backend  # Communication avec la DB et exporter
+      - traefik # Visible pour le reverse proxy
 
-    healthcheck:
+    healthcheck: # Vérification de santé de l'API
       test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
 
-  db:
+  db: # Base de données PostgreSQL
     image: postgres:17.5
     restart: always
     volumes:
@@ -53,7 +53,7 @@ services:
       timeout: 10s
       retries: 5
 
-  traefik:
+  traefik: # Reverse Proxy - Traefik
     image: traefik:latest
     command:
       - "--providers.docker=true"
@@ -70,7 +70,7 @@ services:
       - traefik
 
 
-  prometheus:
+  prometheus: # Prometheus - Monitoring
     image: prom/prometheus
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
@@ -79,13 +79,13 @@ services:
     networks:
       - monitoring
 
-    healthcheck:
+    healthcheck: # Vérifie que Prometheus répond
       test: ["CMD", "wget", "--spider", "--quiet", "http://localhost:9090/-/healthy"]
       interval: 30s
       timeout: 10s
       retries: 3
 
-  grafana:
+  grafana: # Grafana - Visualisation
     image: grafana/grafana
     ports:
       - "3000:3000"
@@ -100,7 +100,7 @@ services:
       retries: 3
 
 
-  postgres_exporter:
+  postgres_exporter:   # PostgreSQL Exporter - métriques DB
     image: prometheuscommunity/postgres-exporter
     environment:
       DATA_SOURCE_NAME: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable"
@@ -113,17 +113,17 @@ services:
       - monitoring
 
 
-  node_exporter:
+  node_exporter: # Node Exporter - métriques système
     image: prom/node-exporter
     ports:
       - "9100:9100"
     networks:
       - monitoring
 
-volumes:
+volumes: # Volumes pour persistance
   db_data:
 
-networks:
+networks: # Réseaux Docker séparés
   backend:
   traefik:
   monitoring:
